@@ -1,8 +1,0 @@
-prefix=/home/shane/catkin_fn/src/auto_steering/build/devel
-
-Name: auto_steering
-Description: Description of auto_steering
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/shane/catkin_fn/src/auto_steering/build/devel/lib 
-Requires: 
