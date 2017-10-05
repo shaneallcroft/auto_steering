@@ -21,17 +21,25 @@ class SubAndPub
 void SubAndPub::cmdVelCallback(const sensor_msgs::LaserScan::ConstPtr& scan_msg)
 {
   geometry_msgs::Twist velMsg;
-
-  if(scan_msg->ranges[540] < 1.0 &&
+  bool shouldTurn = false;
+  /* if(scan_msg->ranges[540] < 1.0 &&
      scan_msg->ranges[539] < 1.0 &&
      scan_msg->ranges[538] < 1.0 &&
      scan_msg->ranges[541] < 1.0) {
+  */
+  for (int i = scan_msg->ranges.size() / 4; i < (scan_msg->ranges.size() - (scan_msg->ranges.size() / 4)); ++i) {
+      if (scan_msg->ranges[i] < 1) {
+          shouldTurn = true;
+          break;
+      }
+  }
+  if(shouldTurn){
     ROS_INFO("TURN!!!");
     velMsg.linear.x = 0.0;
-    velMsg.angular.z = .8;
+    velMsg.angular.z = .3;
   } else {
     ROS_INFO("FORWARD");
-    velMsg.linear.x = .5;
+    velMsg.linear.x = .3;
     velMsg.angular.z = 0.0;
   }
 
