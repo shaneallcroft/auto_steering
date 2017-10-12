@@ -2,8 +2,6 @@
 #include "sensor_msgs/LaserScan.h"
 #include "geometry_msgs/Twist.h"
 
-#define MIN_DIST 0.8
-
 class SubAndPub
 {
   public:
@@ -26,11 +24,11 @@ void SubAndPub::cmdVelCallback(const sensor_msgs::LaserScan::ConstPtr& scan_msg)
   bool shouldTurn = false;
   double sumOfLeftSide = 0.0;
   double sumOfRightSide = 0.0;
-  for (int i = scan_msg->ranges.size() / 3; i < (scan_msg->ranges.size() - (scan_msg->ranges.size() / 3)); ++i) {
-      if (scan_msg->ranges[i] < MIN_DIST) {
+  for (int i = scan_msg->ranges.size() / 4; i < (scan_msg->ranges.size() - (scan_msg->ranges.size() / 4)); ++i) {
+      if (scan_msg->ranges[i] < .5) {
           shouldTurn = true;
        }
-      if(i < scan_msg->ranges.size()>>1){
+      if(i < 540){
           sumOfLeftSide += scan_msg->ranges[i];
       }
       else{
@@ -38,12 +36,12 @@ void SubAndPub::cmdVelCallback(const sensor_msgs::LaserScan::ConstPtr& scan_msg)
       }
   }
   
-  if(shouldTurn && sumOfLeftSide > sumOfRightSide ){
+  if(shouldTurn && sumOfLeftSide < sumOfRightSide ){
     ROS_INFO("TURN LEFT!!!");
     velMsg.linear.x = 0.0;
     velMsg.angular.z = .3;
   }
-  else if(shouldTurn && sumOfLeftSide <= sumOfRightSide){
+  else if(shouldTurn && sumOfLeftSide >= sumOfRightSide){
       ROS_INFO("TURN RIGHT!!!");
       velMsg.linear.x = 0.0;
       velMsg.angular.z = -.3;
