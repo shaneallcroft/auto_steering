@@ -43,7 +43,7 @@ void SubAndPub::cmdVelCallback(const sensor_msgs::LaserScan::ConstPtr& scan_msg)
   } else{
     bool isRightSide = true;
      for (int i = 0; i < scan_msg->ranges.size(); ++i) {
-      if(i > scan_msg->ranges.size() / CONE_DENOMINATOR &&  i < (scan_msg->ranges.size() - (scan_msg->ranges.size() / CONE_DENOMINATOR))){
+      if(i > (scan_msg->ranges.size() / CONE_DENOMINATOR) / 2 &&  i < (scan_msg->ranges.size() - ((scan_msg->ranges.size() / CONE_DENOMINATOR) / 2))){
 	isRightSide = false;
 	continue;
       }
