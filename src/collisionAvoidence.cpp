@@ -3,8 +3,7 @@
 #include "geometry_msgs/Twist.h"
 
 #define MIN_DIST 0.8
-#define CONE_DENOMINATOR 3
-const bool LIDAR_IS_ON_THE_CORRECT_WAY = true;  //True if LIDAR is on the right way
+#define CONE_DENOMINATOR 3 //True if LIDAR is on the right way
 
 class SubAndPub
 {
@@ -20,11 +19,15 @@ public:
 private:
   ros::NodeHandle n;
   ros::Publisher pub;
-  ros::Subscriber sub;
+  ros::Subscriber sub; 
 };
 
 void SubAndPub::cmdVelCallback(const sensor_msgs::LaserScan::ConstPtr & scan_msg)
 {
+  bool LIDAR_IS_ON_THE_CORRECT_WAY;
+  if( !(n.getParam("/LIDAR_facing_correct_direction", LIDAR_IS_ON_THE_CORRECT_WAY) ){
+      LIDAR_IS_ON_THE_CORRECT_WAY = true;  //default value
+    }
   geometry_msgs::Twist velMsg;
   bool shouldTurn = false;
   double sumOfLeftSide = 0.0;
